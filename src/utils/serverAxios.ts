@@ -1,5 +1,6 @@
 import { cookies } from "next/headers";
 import axios from "axios";
+import { getInternalApiBaseUrl } from "lib/internal-url";
 
 /**
  * Returns an axios instance that forwards the current request's cookies.
@@ -15,7 +16,7 @@ export async function getServerAxios() {
     .join("; ");
 
   return axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000",
-    headers: { Cookie: cookieHeader }
+    baseURL: getInternalApiBaseUrl(),
+    headers: { Cookie: cookieHeader },
   });
 }

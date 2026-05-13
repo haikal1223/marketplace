@@ -1,6 +1,6 @@
 import { cache } from "react";
-import axios from "utils/axiosInstance";
 import { prisma } from "lib/prisma";
+import { getProductsCatalog } from "lib/products-catalog-server";
 import Product from "models/Product.model";
 import Filters from "models/Filters";
 
@@ -11,14 +11,6 @@ const OTHERS = [
 ];
 
 const COLORS_FALLBACK = ["#1C1C1C", "#FF7A7A", "#FFC672", "#84FFB5", "#70F6FF", "#6B7AFF"];
-
-interface CatalogResponse {
-  products: Product[];
-  pageCount: number;
-  totalProducts: number;
-  firstIndex: number;
-  lastIndex: number;
-}
 
 export const getFilters = cache(async (): Promise<Filters> => {
   const [topCategories, brands, colorRows] = await Promise.all([
@@ -91,7 +83,7 @@ export const getProducts = cache(
     brands,
     rating,
     category,
-    sales
+    sales,
   }: Params): Promise<{
     products: Product[];
     pageCount: number;
@@ -99,21 +91,16 @@ export const getProducts = cache(
     firstIndex: number;
     lastIndex: number;
   }> => {
-    const response = await axios.get<CatalogResponse>("/api/products/catalog", {
-      params: {
-        q: q || undefined,
-        page: page || "1",
-        sort: sort || undefined,
-        category: category || undefined,
-        prices: prices ?? `[0,${100_000_000}]`,
-        colors: colors ?? "[]",
-        brands: brands ?? "[]",
-        rating: rating ?? "0",
-        sales: sales ?? "[]"
-      }
+    return getProductsCatalog({
+      q: q || "",
+      page: page || "1",
+      sort: sort || "relevance",
+      category: category || "",
+      prices: prices ?? `[0,${100_000_000}]`,
+      colors: colors ?? "[]",
+      brands: brands ?? "[]",
+      rating: rating ?? "0",
+      sales: sales ?? "[]",
     });
-
-    const { products, pageCount, totalProducts, firstIndex, lastIndex } = response.data;
-    return { products, pageCount, totalProducts, firstIndex, lastIndex };
-  }
+  },
 );

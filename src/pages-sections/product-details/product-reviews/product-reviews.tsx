@@ -21,7 +21,12 @@ export default async function ProductReviews() {
         <ReviewRoot key={ind}>
           <div className="user-info">
             <Avatar variant="rounded" className="user-avatar">
-              <Image src={imgUrl} alt={name} fill sizes="(48px 48px)" />
+              <Image
+                src={imgUrl ?? "/assets/images/avatars/001-man.svg"}
+                alt={name}
+                fill
+                sizes="(48px 48px)"
+              />
             </Avatar>
 
             <div>

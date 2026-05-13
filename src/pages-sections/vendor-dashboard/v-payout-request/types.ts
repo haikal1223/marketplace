@@ -3,5 +3,5 @@ export interface Request {
   date: string;
   status: string;
   amount: number;
-  message: number;
+  message: string | null;
 }

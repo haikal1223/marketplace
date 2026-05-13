@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "lib/prisma";
+import { getProductBySlugPayload } from "lib/product-server";
 
 // GET /api/products/slug?slug=product-slug
 export async function GET(req: NextRequest) {
@@ -10,26 +10,11 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Slug is required" }, { status: 400 });
   }
 
-  const product = await prisma.product.findUnique({
-    where: { slug },
-    include: {
-      shop: true,
-      brand: { select: { id: true, name: true, slug: true } },
-      categories: { include: { category: true } },
-      reviews: {
-        include: { customer: { select: { id: true, firstName: true, lastName: true, avatar: true } } },
-        where: { published: true }
-      }
-    }
-  });
+  const payload = await getProductBySlugPayload(slug);
 
-  if (!product) {
+  if (!payload) {
     return NextResponse.json({ error: "Product not found" }, { status: 404 });
   }
 
-  return NextResponse.json({
-    ...product,
-    brand: product.brand?.name ?? null,
-    categories: product.categories.map((pc) => pc.category.name)
-  });
+  return NextResponse.json(payload);
 }

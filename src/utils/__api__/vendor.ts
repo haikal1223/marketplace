@@ -1,23 +1,24 @@
 import { cache } from "react";
-import axios from "utils/axiosInstance";
+import {
+  getVendorPayoutRequestsData,
+  getVendorProductReviewsData,
+  getVendorRefundRequestsData,
+} from "lib/vendor-public-server";
 
 const getAllProductReviews = cache(async () => {
-  const response = await axios.get("/api/vendor/product-reviews");
-  return response.data;
+  return getVendorProductReviewsData();
 });
 
 const getAllRefundRequests = cache(async () => {
-  const response = await axios.get("/api/vendor/refund-requests");
-  return response.data;
+  return getVendorRefundRequestsData();
 });
 
 const getAllPayoutRequests = cache(async () => {
-  const response = await axios.get("/api/vendor/payout-requests");
-  return response.data;
+  return getVendorPayoutRequestsData();
 });
 
 export default {
   getAllProductReviews,
   getAllRefundRequests,
-  getAllPayoutRequests
+  getAllPayoutRequests,
 };
