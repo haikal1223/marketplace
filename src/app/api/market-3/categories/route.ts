@@ -1,12 +1,7 @@
 import { NextResponse } from "next/server";
-import { prisma } from "lib/prisma";
+import { getMarket3Categories } from "lib/market-3-server";
 
 export async function GET() {
-  const categories = await prisma.category.findMany({
-    where: { parentId: null },
-    orderBy: { name: "asc" },
-    take: 12
-  });
-
+  const categories = await getMarket3Categories();
   return NextResponse.json(categories);
 }

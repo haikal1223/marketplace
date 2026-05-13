@@ -1,55 +1,60 @@
 import { cache } from "react";
-import axios from "utils/axiosInstance";
 import Brand from "models/Brand.model";
 import Product from "models/Product.model";
 import Service from "models/Service.model";
 import Shop from "models/Shop.model";
 import { CategoryBasedProducts, MainCarouselItem } from "models/Market-2.model";
 import Category from "models/Category.model";
+import {
+  getMarket3Brands,
+  getMarket3Categories,
+  getMarket3CategoryBasedProduct,
+  getMarket3MainCarousel,
+  getMarket3ProductsList,
+  getMarket3Services,
+  getMarket3ShopsList,
+} from "lib/market-3-server";
 
 const getProducts = cache(async (): Promise<Product[]> => {
-  const response = await axios.get("/api/market-3/products");
-  return response.data;
+  return getMarket3ProductsList(null);
 });
 
 const getServices = cache(async (): Promise<Service[]> => {
-  const response = await axios.get("/api/market-3/service");
-  return response.data;
+  return getMarket3Services();
 });
 
-const getCategories = cache(async () => {
-  const response = await axios.get<Category[]>("/api/market-3/categories");
-  return response.data;
+const getCategories = cache(async (): Promise<Category[]> => {
+  return (await getMarket3Categories()) as unknown as Category[];
 });
 
 const getBrands = cache(async (): Promise<Brand[]> => {
-  const response = await axios.get("/api/market-3/brand");
-  return response.data;
+  return getMarket3Brands();
 });
 
 const getMainCarouselData = cache(async (): Promise<MainCarouselItem[]> => {
-  const response = await axios.get("/api/market-3/main-carousel");
-  return response.data;
+  return getMarket3MainCarousel();
 });
 
-const getElectronicsProducts = cache(async (): Promise<CategoryBasedProducts> => {
-  const response = await axios.get("/api/market-3/category-based-product?tag=electronics");
-  return response.data;
-});
+const getElectronicsProducts = cache(
+  async (): Promise<CategoryBasedProducts> => {
+    return getMarket3CategoryBasedProduct("electronics");
+  },
+);
 
-const getMenFashionProducts = cache(async (): Promise<CategoryBasedProducts> => {
-  const response = await axios.get("/api/market-3/category-based-product?tag=men");
-  return response.data;
-});
+const getMenFashionProducts = cache(
+  async (): Promise<CategoryBasedProducts> => {
+    return getMarket3CategoryBasedProduct("men");
+  },
+);
 
-const getWomenFashionProducts = cache(async (): Promise<CategoryBasedProducts> => {
-  const response = await axios.get("/api/market-3/category-based-product?tag=women");
-  return response.data;
-});
+const getWomenFashionProducts = cache(
+  async (): Promise<CategoryBasedProducts> => {
+    return getMarket3CategoryBasedProduct("women");
+  },
+);
 
 const getShops = cache(async (): Promise<Shop[]> => {
-  const response = await axios.get("/api/market-3/shops");
-  return response.data;
+  return (await getMarket3ShopsList()) as unknown as Shop[];
 });
 
 export default {
@@ -61,5 +66,5 @@ export default {
   getMainCarouselData,
   getMenFashionProducts,
   getElectronicsProducts,
-  getWomenFashionProducts
+  getWomenFashionProducts,
 };

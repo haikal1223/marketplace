@@ -3,6 +3,9 @@ import { MarketThreePageView } from "pages-sections/market-3/page-view";
 import ShopLayout1 from "components/layouts/shop-layout-1";
 import api from "utils/__api__/layout";
 
+/** Same as /market-3: page uses Prisma-backed demo data. */
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Bazaar - Next.js E-commerce Template",
   description:

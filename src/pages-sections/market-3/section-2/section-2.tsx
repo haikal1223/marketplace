@@ -3,7 +3,7 @@ import IconComponent from "components/IconComponent";
 // STYLED COMPONENTS
 import { StyledRoot, ServiceItem } from "./styles";
 // API FUNCTIONS
-import api from "utils/__api__/market-2";
+import api from "utils/__api__/market-3";
 
 export default async function Section2() {
   const services = await api.getServices();

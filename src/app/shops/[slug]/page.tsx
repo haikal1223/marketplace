@@ -8,6 +8,8 @@ import { getFilters } from "utils/__api__/product-search";
 // CUSTOM DATA MODEL
 import { SlugParams } from "models/Common";
 
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Shop Details - Bazaar Next.js E-commerce Template",
   description:

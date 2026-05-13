@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+// CUSTOM DATA MODEL
+import type Shop from "models/Shop.model";
 // API FUNCTIONS
 import api from "utils/__api__/shop";
 // PAGE VIEW COMPONENT
 import { ShopsPageView } from "pages-sections/shops/page-view";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Shops - Bazaar Next.js E-commerce Template",
@@ -19,7 +23,7 @@ export default async function Shops() {
 
   return (
     <ShopsPageView
-      shops={shops}
+      shops={shops as unknown as Shop[]}
       lastIndex={meta.lastIndex}
       totalPages={meta.totalPages}
       firstIndex={meta.firstIndex}

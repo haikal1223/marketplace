@@ -13,8 +13,6 @@ import FlexBox from "components/flex-box/flex-box";
 import { format } from "date-fns/format";
 
 /** Must match prisma `OrderStatus` */
-const ORDER_STATUSES = ["Pending", "Processing", "Delivered", "Cancelled"] as const;
-
 const ORDER_STATUSES = ["Pending", "Processing", "Shipped", "Delivered", "Cancelled"];
 
 // ==============================================================

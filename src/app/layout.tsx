@@ -1,7 +1,9 @@
 import type { ReactNode } from "react";
 import { Geist } from "next/font/google";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import Script from "next/script";
 import { SessionProvider } from "next-auth/react";
+
+const gaId = process.env.NEXT_PUBLIC_GA_ID ?? "G-XKPD36JXY0";
 
 export const geist = Geist({
   subsets: ["latin"]
@@ -51,7 +53,22 @@ export default function RootLayout({ children, modal }: RootLayoutProps) {
           </CartProvider>
         </SessionProvider>
 
-        <GoogleAnalytics gaId="G-XKPD36JXY0" />
+        {gaId ? (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${gaId}');
+              `}
+            </Script>
+          </>
+        ) : null}
       </body>
     </html>
   );

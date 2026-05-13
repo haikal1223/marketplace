@@ -326,7 +326,7 @@ const appIcons = {
   Location,
   CreditCard,
   Trash,
-  Pencil
+  Pencil,
 };
 
 export default appIcons;

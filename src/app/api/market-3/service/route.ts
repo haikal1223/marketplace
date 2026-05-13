@@ -1,8 +1,7 @@
 import { NextResponse } from "next/server";
-import { services } from "__server__/__db__/market-3/data";
+import { getMarket3Services } from "lib/market-3-server";
 
-// Service cards are static content (shipping, warranty, etc.)
-// Move to DB if you need CMS-managed service cards
 export async function GET() {
+  const services = await getMarket3Services();
   return NextResponse.json(services);
 }

@@ -9,8 +9,8 @@ const breakpoints = {
     md: 960,
     lg: 1280,
     xl: 1600,
-    xxl: 1920
-  }
+    xxl: 1920,
+  },
 };
 
 let oldMapping: ThemeMapping;
@@ -22,12 +22,12 @@ const themeMappings = [
   { paths: ["/furniture-3"], color: COLORS.GOLD },
   { paths: ["/furniture-1", "/medical"], color: COLORS.PASTE },
   { paths: ["/health-beauty", "/admin", "/vendor"], color: COLORS.HEALTH },
-  { paths: ["/grocery-1", "/grocery-2"], color: COLORS.RED }
+  { paths: ["/grocery-1", "/grocery-2"], color: COLORS.RED },
 ];
 
 export default function themeOptions(pathname: string) {
   let selectedMapping = themeMappings.find((mapping) =>
-    mapping.paths.some((path) => pathname.startsWith(path))
+    mapping.paths.some((path) => pathname.startsWith(path)),
   );
 
   if (["/mini-cart", "/login"].includes(pathname)) {
@@ -44,7 +44,7 @@ export default function themeOptions(pathname: string) {
     typography,
     components,
     breakpoints,
-    palette: selectedPalette
+    palette: selectedPalette,
   };
 
   return themeOption;

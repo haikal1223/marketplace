@@ -22,7 +22,6 @@
     "@mui/material": "^7.1.0",
     "@mui/material-nextjs": "^7.1.0",
     "@mui/x-date-pickers": "^8.3.0",
-    "@next/third-parties": "^16.2.4",
     "@prisma/client": "^6.19.2",
     "apexcharts": "^4.7.0",
     "axios": "^1.9.0",

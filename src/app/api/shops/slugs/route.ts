@@ -1,11 +1,8 @@
 import { NextResponse } from "next/server";
-import { prisma } from "lib/prisma";
+import { getShopSlugParamsList } from "lib/shops-server";
 
 // GET /api/shops/slugs — all shop slugs for static generation
 export async function GET() {
-  const shops = await prisma.shop.findMany({
-    select: { slug: true }
-  });
-
-  return NextResponse.json(shops.map((s) => ({ params: { slug: s.slug } })));
+  const slugs = await getShopSlugParamsList();
+  return NextResponse.json(slugs);
 }
