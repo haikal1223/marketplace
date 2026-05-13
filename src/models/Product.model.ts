@@ -11,6 +11,8 @@ export default interface Product {
   thumbnail: string;
   description?: string;
   id: string;
+  /** From API / Prisma when loaded for detail */
+  stock?: number;
   shop?: Shop;
   brand?: string;
   size?: string[];

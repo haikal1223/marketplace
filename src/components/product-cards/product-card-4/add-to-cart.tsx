@@ -28,7 +28,7 @@ export default function AddToCart({ product }: Props) {
     setTimeout(() => {
       dispatch({
         type: "CHANGE_CART_AMOUNT",
-        payload: { id, slug, price, title, thumbnail, qty: 1 }
+        payload: { id, slug, price, discount: product.discount ?? 0, title, thumbnail, qty: 1 }
       });
 
       router.push("/mini-cart", { scroll: false });

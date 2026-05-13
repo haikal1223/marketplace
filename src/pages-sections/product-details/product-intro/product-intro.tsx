@@ -10,7 +10,7 @@ import ProductGallery from "./product-gallery";
 import ProductVariantSelector from "./product-variant-selector";
 import WishlistHeartButton from "components/wishlist/wishlist-heart-button";
 // CUSTOM UTILS LIBRARY FUNCTION
-import { currency } from "lib";
+import { calculateDiscount, currency } from "lib";
 // STYLED COMPONENTS
 import { StyledRoot } from "./styles";
 // CUSTOM DATA MODEL
@@ -37,21 +37,7 @@ export default function ProductIntro({ product, inWishlist }: Props) {
           </Typography>
 
           <Typography variant="body1">
-            Product Code: <strong>ERE238</strong>
-          </Typography>
-
-          <Typography variant="body1" fontSize={30} fontWeight={700} sx={{ my: 1 }}>
-            $484.00{" "}
-            <Typography
-              component="span"
-              sx={{
-                fontSize: 20,
-                fontWeight: 600,
-                color: "text.secondary",
-                textDecoration: "line-through"
-              }}>
-              $550.00
-            </Typography>
+            Product Code: <strong>{product.slug}</strong>
           </Typography>
 
           {/* PRODUCT BRAND */}
@@ -73,11 +59,27 @@ export default function ProductIntro({ product, inWishlist }: Props) {
 
           {/* PRICE & STOCK */}
           <div className="price">
-            <Typography variant="h2" sx={{ color: "primary.main", mb: 0.5, lineHeight: 1 }}>
-              {currency(product.price)}
-            </Typography>
+            <Stack direction="row" alignItems="baseline" gap={1.5} flexWrap="wrap" sx={{ mb: 0.5 }}>
+              <Typography variant="h2" sx={{ color: "primary.main", lineHeight: 1 }}>
+                {calculateDiscount(product.price, product.discount)}
+              </Typography>
+              {product.discount > 0 && (
+                <Typography
+                  component="span"
+                  variant="h6"
+                  sx={{ color: "text.secondary", textDecoration: "line-through", fontWeight: 600 }}>
+                  {currency(product.price)}
+                </Typography>
+              )}
+            </Stack>
 
-            <p>Stock Available</p>
+            <p>
+              {typeof product.stock === "number"
+                ? product.stock > 0
+                  ? `${product.stock} available`
+                  : "Out of stock"
+                : "Stock Available"}
+            </p>
           </div>
 
           {/* ADD TO CART + WISHLIST */}

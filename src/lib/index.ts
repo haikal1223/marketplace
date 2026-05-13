@@ -30,6 +30,13 @@ export function renderProductCount(page: number, perPageProduct: number, totalPr
   return `Showing ${startNumber + 1}-${endNumber} of ${totalProduct} products`;
 }
 
+/** List price minus percent discount; unit price charged to the customer. */
+export function effectiveUnitPrice(price: number, discount: number): number {
+  const p = Number.isFinite(price) ? price : 0;
+  const d = Number.isFinite(discount) ? discount : 0;
+  return Number((p - p * (d / 100)).toFixed(2));
+}
+
 /**
  * CALCULATE PRICE WITH PRODUCT DISCOUNT THEN RETURN NEW PRODUCT PRICES
  * @param  price - PRODUCT PRICE
@@ -38,8 +45,7 @@ export function renderProductCount(page: number, perPageProduct: number, totalPr
  */
 
 export function calculateDiscount(price: number, discount: number) {
-  const afterDiscount = Number((price - price * (discount / 100)).toFixed(2));
-  return currency(afterDiscount);
+  return currency(effectiveUnitPrice(price, discount));
 }
 
 /**

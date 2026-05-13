@@ -2,6 +2,8 @@
 
 import { createContext, PropsWithChildren, useEffect, useMemo, useReducer } from "react";
 
+import { effectiveUnitPrice } from "lib";
+
 const CART_STORAGE_KEY = "bazaar_cart";
 
 // =================================================================================
@@ -12,14 +14,31 @@ export interface CartItem {
   qty: number;
   title: string;
   slug: string;
+  /** Unit price after discount (what the customer pays per item). */
   price: number;
   thumbnail: string;
   weight?: number;
 }
 
+/** Dispatch payload may include `discount` (list %) when built from a full Product. */
+type CartPayload = CartItem & { discount?: number };
+
 interface CartActionType {
-  payload?: CartItem;
+  payload?: CartPayload;
   type: "CHANGE_CART_AMOUNT" | "CLEAR_CART";
+}
+
+function normalizeNewCartItem(raw: CartPayload): CartItem {
+  const discount = typeof raw.discount === "number" ? raw.discount : 0;
+  return {
+    id: raw.id,
+    qty: raw.qty,
+    title: raw.title,
+    slug: raw.slug,
+    thumbnail: raw.thumbnail,
+    weight: raw.weight,
+    price: effectiveUnitPrice(raw.price, discount)
+  };
 }
 
 // =================================================================================
@@ -68,7 +87,7 @@ const reducer = (state: InitialState, action: CartActionType) => {
         return { ...state, cart: updatedCart };
       }
 
-      return { ...state, cart: [...cartList, cartItem] };
+      return { ...state, cart: [...cartList, normalizeNewCartItem(cartItem)] };
 
     case "CLEAR_CART":
       return { ...state, cart: [] };
